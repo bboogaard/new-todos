@@ -1,0 +1,242 @@
+<html>
+
+<head>
+  <title>Todo's</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/trix.css" rel="stylesheet">
+    <link href="./css/dropzone.min.css" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="{% static 'csrf.jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.ext.js' %}"></script> -->
+
+    <!-- Complete Bootstrap JavaScript Bundle -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">Todo's</a>
+    <div class="mr-auto"></div>
+    <div class="mr-2">
+      <span class="navbar-text" id="user-info">
+        
+      </span>
+    </div>  
+  </nav>
+
+  <!-- Main Container -->
+  <main role="main" class="container">
+      <div class="card" id="login-widget">
+          <div class="card-block">
+              <h4 class="card-title">Log in</h4>
+              <div class="card-text">
+                <form id="login-form">
+                  <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                  <button id="login-button" type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+          </div>  
+      </div>
+      <div class="row">  
+        <div class="col-md-6 mb-2">
+          <div class="card" id="todo-widget">
+              <div class="card-block">
+                  <h4 class="card-title">Todo's</h4>
+                  <div class="card-text">
+                      <div class="form-group">
+                        <ul id="todos" contenteditable>
+                          <li>Enter item</li>
+                        </ul>
+                      </div>    
+                      <a href="javascript:void(0);" id="saveTodos" class="btn btn-primary">Save</a>
+                      <a href="javascript:void(0);" id="deleteTodos" class="btn btn-primary">Delete</a>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-2">  
+          <div class="card" id="note-widget">
+              <div class="card-block">
+                  <h4 class="card-title">Notes</h4>
+                  <div class="card-text">
+                      <div class="form-group">
+                        <div id="notes">
+                        </div>
+                      </div>    
+                      <a href="javascript:void(0);" id="saveNotes" class="btn btn-primary">Save</a>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col-md-6 mb-2">      
+          <div class="card" id="file-widget">
+              <div class="card-block">
+                  <h4 class="card-title">Files</h4>
+                  <div class="card-text">
+                      <div class="form-group">
+                        <ul id="files">
+                          
+                        </ul>
+                      </div> 
+                      <div class="form-group">
+                        <form action="" id="files-upload" method="post" enctype="multipart/form-data">
+                          <input type="file" name="file">
+                        </form>
+                      </div>
+                      <a href="javascript:void(0);" id="saveFile" class="btn btn-primary">Save</a>
+                      <a href="javascript:void(0);" id="deleteFiles" class="btn btn-primary">Delete</a>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-2">      
+          <div class="card" id="event-widget">
+              <div class="card-block">
+                  <h4 class="card-title">Events</h4>
+                  <div class="card-text">
+                      <div class="form-group">
+                        <ul id="events">
+                          
+                        </ul>
+                      </div>
+                      <div class="form-group">
+                        <label for="event_text">Add event:</label>
+                        <input type="text" id="event_text" name="event_text" style="width: 150px">
+                        <label for="event_date">for:</label>
+                        <input type="date" id="event_date" name="event_date" style="width: 125px">
+                        <label for="event_time">at:</label>
+                        <input type="time" id="event_time" name="event_time" style="width: 100px">
+                      </div>
+                      <a href="javascript:void(0);" id="addEvent" class="btn btn-primary">Add</a>
+                      <a href="javascript:void(0);" id="deleteEvents" class="btn btn-primary">Delete</a>
+                  </div>
+              </div>
+          </div>
+        </div>  
+      </div>  
+  </main><!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="container text-center">
+    <p></p>
+  </footer>
+
+  <!-- Complete Bootstrap JavaScript -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> -->
+  <script type="text/javascript" src="/js/navigo.min.js"></script>
+  <script type="text/javascript" src="/js/js.cookie.min.js"></script>
+  <script type="text/javascript" src="/js/trix.min.js"></script>
+  <script type="text/javascript" src="/js/widget.js"></script>
+  <script type="text/javascript" src="/js/events.js"></script>
+  <script type="text/javascript" src="/js/login.widget.js"></script>
+  <script type="text/javascript" src="/js/todos.widget.js"></script>
+  <script type="text/javascript" src="/js/notes.widget.js"></script>
+  <script type="text/javascript" src="/js/files.widget.js"></script>
+  <script type="text/javascript" src="/js/events.widget.js"></script>
+  <script type="text/javascript" src="/js/todos.js"></script>
+  <script type="text/javascript" src="/js/api.client.js"></script>
+  <script type="text/javascript">
+    async function getSettings() {
+      return await fetch('/data/settings.json')
+          .then((res) => res.json());
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      getSettings().then( (settings) => {
+        let client = new ApiClient({
+          apiUrl: settings.api_url,
+          accessTokenExpireMinutes: settings.access_token_expire_minutes
+        });
+        let router = new Navigo('/');
+        let events = new Events({
+          client: client,
+          router: router
+        });
+        let loginWidget = new LoginWidget({
+          client: client,
+          router: router, 
+          events: events,
+          container: document.getElementById('login-widget'),
+          loginForm: document.getElementById('login-form'),
+          loginButton: document.getElementById('login-button'),
+        });
+        let todoWidget = new TodoWidget({
+          client: client,
+          router: router, 
+          events: events,
+          container: document.getElementById('todo-widget'),
+          todoList: document.getElementById('todos'),
+          saveButton: document.getElementById('saveTodos'),
+          deleteButton: document.getElementById('deleteTodos')
+        });
+        let noteWidget = new NoteWidget({
+          client: client,
+          router: router,
+          events: events, 
+          container: document.getElementById('note-widget'),
+          notesField: document.getElementById('notes'),
+          saveButton: document.getElementById('saveNotes')
+        });
+        let fileWidget = new FileWidget({
+          client: client,
+          router: router,
+          events: events, 
+          container: document.getElementById('file-widget'),
+          fileList: document.getElementById('files'),
+          saveButton: document.getElementById('saveFile'),
+          deleteButton: document.getElementById('deleteFiles'),
+          uploadForm: document.getElementById('files-upload')
+        });
+        let eventWidget = new EventWidget({
+          client: client,
+          router: router,
+          events: events, 
+          container: document.getElementById('event-widget'),
+          eventList: document.getElementById('events'),
+          eventText: document.getElementById('event_text'),
+          eventDate: document.getElementById('event_date'),
+          eventTime: document.getElementById('event_time'),
+          addButton: document.getElementById('addEvent'),
+          deleteButton: document.getElementById('deleteEvents')
+        });
+        let todos = new Todos({
+          client: client,
+          router: router,
+          userInfo: document.getElementById('user-info'),
+          loginWidget: loginWidget,
+          widgets: [
+            todoWidget,
+            noteWidget,
+            fileWidget,
+            eventWidget
+          ]
+        });
+        todos.init();
+      });
+    });
+  </script>
+</body>
+
+</html>

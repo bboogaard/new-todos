@@ -1,0 +1,7 @@
+env
+__pycache__
+.vscode
+.idea
+/.coverage
+/.env
+/python/.coverage
