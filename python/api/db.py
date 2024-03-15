@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy import (Column, Integer, MetaData, Boolean, String, Table,
-                        create_engine, ForeignKey, DateTime)
+                        create_engine, ForeignKey, DateTime, ARRAY)
 
 from databases import Database
 
@@ -21,6 +21,7 @@ users = Table(
     Column('full_name', String),
     Column('disabled', Boolean),
     Column('hashed_password', String),
+    Column('widgets', ARRAY(String))
 )
 todos = Table(
     'todos',

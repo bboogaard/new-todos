@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -30,7 +31,7 @@ def start_app(keep_db: bool = True):
     metadata.create_all(engine)
     _app.add_middleware(
         CORSMiddleware,
-        allow_origins=['http://127.0.0.1:8000'],
+        allow_origins=os.getenv('ALLOWED_ORIGINS').split(','),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

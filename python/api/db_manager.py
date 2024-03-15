@@ -2,7 +2,9 @@ import datetime
 import os
 
 from api.db import database, events, files, notes, todos, users
-from api.models import CreateEvent, CreateFile, CreateUpdateNote, CreateUpdateTodo, User, UserInDB
+from api.decorators import Widget
+from api.models import CreateFile, CreateUpdateEvent, CreateUpdateNote, CreateUpdateTodo, CreateUser, UpdateUser, \
+    User, UserInDB
 
 
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
@@ -73,9 +75,19 @@ async def list_files(user: User):
     return await database.fetch_all(query=query)
 
 
-async def add_event(payload: CreateEvent, user: User):
+async def add_event(payload: CreateUpdateEvent, user: User):
     query = events.insert().values(**{**payload.dict(), 'username': user.username})
     return await database.execute(query=query)
+
+
+async def update_event(event_id: int, payload: CreateUpdateEvent, user: User):
+    query = events.update((events.c.id == event_id) & (events.c.username == user.username)).values(**payload.dict())
+    return await database.execute(query=query)
+
+
+async def get_event(event_id: int, user: User):
+    query = events.select((events.c.id == event_id) & (events.c.username == user.username))
+    return await database.fetch_one(query=query)
 
 
 async def list_events(user: User):
@@ -91,6 +103,44 @@ async def delete_event(event_id: int, user: User):
     return await database.execute(query=query)
 
 
+async def add_user(payload: CreateUser):
+    from api.auth import get_password_hash
+
+    payload = payload.dict()
+    password = payload.pop('password')
+
+    user = UserInDB(
+        **payload,
+        hashed_password=get_password_hash(password),
+    )
+    query = users.insert().values(**user.dict())
+    return await database.execute(query=query)
+
+
+async def update_user(username: str, payload: UpdateUser):
+    from api.auth import get_password_hash
+
+    payload = payload.dict()
+    password = payload.pop('password')
+    if password:
+        payload.update({
+            'password': get_password_hash(password)
+        })
+
+    query = users.update(users.c.username == username).values(**payload)
+    return await database.execute(query=query)
+
+
+async def list_users():
+    query = users.select(users.c.username != 'admin').order_by(users.c.username)
+    return await database.fetch_all(query=query)
+
+
+async def delete_user(username):
+    query = users.delete(users.c.username == username)
+    return await database.execute(query=query)
+
+
 async def create_admin():
     from api.auth import get_password_hash
 
@@ -103,7 +153,8 @@ async def create_admin():
         email='admin@localhost.tld',
         full_name='Admin',
         disabled=False,
-        hashed_password=get_password_hash(ADMIN_PASSWORD)
+        hashed_password=get_password_hash(ADMIN_PASSWORD),
+        widgets=Widget.all()
     )
     query = users.insert().values(**user.dict())
     return await database.execute(query=query)

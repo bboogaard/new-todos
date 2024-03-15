@@ -1,6 +1,7 @@
 import datetime
+from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
 
 
 class Token(BaseModel):
@@ -13,10 +14,33 @@ class TokenData(BaseModel):
 
 
 class User(BaseModel):
-    username: str
-    email: str | None = None
+    username: str = Field(..., min_length=1)
+    email: EmailStr | None = None
     full_name: str | None = None
     disabled: bool | None = None
+    widgets: List[str] = None
+
+
+class UserInfo(BaseModel):
+    username: str
+    email: EmailStr | None = None
+    full_name: str | None = None
+
+    @property
+    def name(self):
+        return self.full_name or self.username
+
+
+class CreateUser(User):
+    password: str = Field(..., min_length=1)
+
+
+class UpdateUser(BaseModel):
+    email: EmailStr | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
+    widgets: List[str] = None
+    password: str = None
 
 
 class UserInDB(User):
@@ -47,10 +71,10 @@ class ReadFile(CreateFile):
     id: int
 
 
-class CreateEvent(BaseModel):
-    text: str
+class CreateUpdateEvent(BaseModel):
+    text: str = Field(..., min_length=1)
     datetime: datetime.datetime
 
 
-class ReadEvent(CreateEvent):
+class ReadEvent(CreateUpdateEvent):
     id: int
