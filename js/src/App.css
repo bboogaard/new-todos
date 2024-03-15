@@ -1,0 +1,95 @@
+body {
+  padding-top: 5rem;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+body.default {
+  background: url('./assets/images/wallpapers/background-default.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+body.mountains-landscape-1 {
+  background: url('./assets/images/wallpapers/background-alt-1.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+body.mountains-landscape-2 {
+  background: url('./assets/images/wallpapers/background-alt-2.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+body.mountains-landscape-3 {
+  background: url('./assets/images/wallpapers/background-alt-3.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+#todo-widget {
+  display: none;
+}
+
+.list-group a {
+  cursor: pointer;
+}
+
+#event-widget {
+  display: none;
+}
+
+#note-widget {
+  display: none;
+}
+
+#file-widget {
+  display: none;
+}
+
+ul#files {
+    margin:0;
+    padding:0;
+}
+ul#files li {
+    list-style-type:none;
+    margin:0;
+    padding:10px;
+    border-bottom:1px solid #333;
+}
+ul#files li:first-child{
+    border-top:1px solid #333;
+}
+
+#user-widget table tbody tr,
+#event-widget table tbody tr {
+  cursor: pointer;
+}
+
+#user-widget table tbody tr.selected,
+#event-widget table tbody tr.selected {
+  background-color: #D7D7D7;
+}
+
+.card {
+    break-inside: avoid;
+}
+
+.card-block {
+    padding: 10px;
+}
+
+.col {
+  padding-bottom: 25px;
+}

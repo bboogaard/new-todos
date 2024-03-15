@@ -1,0 +1,18 @@
+[
+	{
+		"name": "Mountains Landscape (1)",
+		"className": "mountains-landscape-1"
+	},
+	{
+		"name": "Mountains Landscape (2)",
+		"className": "mountains-landscape-2"
+	},
+	{
+		"name": "Mountains Landscape (3)",
+		"className": "mountains-landscape-3"
+	},
+	{
+		"name": "Default background",
+		"className": "default"
+	}
+]

@@ -5,3 +5,10 @@ __pycache__
 /.coverage
 /.env
 /python/.coverage
+/javascript.zip
+python/data
+js/build
+js/node_modules
+/js/.env
+/js/yarn-error.log
+/js/yarn.lock
