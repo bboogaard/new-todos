@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Union
 
 from pydantic import BaseModel, Field, EmailStr
 
@@ -10,21 +10,28 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str | None = None
+    username: Union[str, None] = None
 
 
 class User(BaseModel):
     username: str = Field(..., min_length=1)
-    email: EmailStr | None = None
-    full_name: str | None = None
-    disabled: bool | None = None
+    email: Union[EmailStr, None] = None
+    full_name: Union[str, None] = None
+    disabled: Union[bool,  None] = None
     widgets: List[str] = None
 
 
-class UserInfo(BaseModel):
+class ReadUserInfo(BaseModel):
+    email: Union[EmailStr, None] = None
+    full_name: Union[str, None] = None
+
+
+class UpdateUserInfo(ReadUserInfo):
+    password: str = None
+
+
+class UserInfo(UpdateUserInfo):
     username: str
-    email: EmailStr | None = None
-    full_name: str | None = None
 
     @property
     def name(self):
@@ -36,9 +43,9 @@ class CreateUser(User):
 
 
 class UpdateUser(BaseModel):
-    email: EmailStr | None = None
-    full_name: str | None = None
-    disabled: bool | None = None
+    email: Union[EmailStr, None] = None
+    full_name: Union[str, None] = None
+    disabled: Union[bool,  None] = None
     widgets: List[str] = None
     password: str = None
 

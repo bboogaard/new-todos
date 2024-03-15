@@ -4,7 +4,7 @@ import os
 from api.db import database, events, files, notes, todos, users
 from api.decorators import Widget
 from api.models import CreateFile, CreateUpdateEvent, CreateUpdateNote, CreateUpdateTodo, CreateUser, UpdateUser, \
-    User, UserInDB
+    UpdateUserInfo, User, UserInDB
 
 
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
@@ -124,7 +124,7 @@ async def update_user(username: str, payload: UpdateUser):
     password = payload.pop('password')
     if password:
         payload.update({
-            'password': get_password_hash(password)
+            'hashed_password': get_password_hash(password)
         })
 
     query = users.update(users.c.username == username).values(**payload)
@@ -163,3 +163,17 @@ async def create_admin():
 async def get_user(username: str):
     query = users.select(users.c.username == username)
     return await database.fetch_one(query=query)
+
+
+async def update_userinfo(username: str, payload: UpdateUserInfo):
+    from api.auth import get_password_hash
+
+    payload = payload.dict()
+    password = payload.pop('password')
+    if password:
+        payload.update({
+            'hashed_password': get_password_hash(password)
+        })
+
+    query = users.update(users.c.username == username).values(**payload)
+    return await database.execute(query=query)

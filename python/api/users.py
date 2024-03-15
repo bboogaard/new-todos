@@ -8,7 +8,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from api import db_manager
 from api.auth import authenticate_user, create_access_token, get_current_active_user
 from api.decorators import require_allowed_for_widget, Widget
-from api.models import CreateUser, UpdateUser, Token, User, UserInfo
+from api.models import CreateUser, UpdateUser, ReadUserInfo, Token, UpdateUserInfo, User, UserInfo
 
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
@@ -57,6 +57,16 @@ async def get_userinfo(current_user: Annotated[User, Depends(get_current_active_
         full_name=current_user.full_name
     )
     return userinfo.dict()
+
+
+@users.put('/userinfo/me/', response_model=ReadUserInfo, status_code=200)
+async def update_userinfo(current_user: Annotated[User, Depends(get_current_active_user)], payload: UpdateUserInfo):
+    UpdateUserInfo.validate(payload)
+    await db_manager.update_userinfo(current_user.username, payload)
+    return {
+        'username': current_user.username,
+        **payload.dict()
+    }
 
 
 @users.delete('/{username}/', status_code=204)

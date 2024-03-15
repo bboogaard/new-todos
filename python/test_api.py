@@ -4,7 +4,6 @@ from contextlib import contextmanager
 from io import BytesIO
 
 import pytest
-from fastapi.datastructures import UploadFile
 from fastapi.testclient import TestClient
 from freezegun import freeze_time
 
@@ -472,3 +471,66 @@ async def test_list_users():
         assert response.status_code == 200
         list_data = response.json()
         assert data in list_data
+
+
+@pytest.mark.asyncio
+async def test_update_user():
+    with pytest_client() as client:
+        token = get_token(client, 'users')
+        data = json.dumps({
+            'username': 'tester2',
+            'password': 'welcome',
+            'email': 'tester2@example.org',
+            'full_name': 'Tester 2',
+        })
+        response = client.post("/api/v1/users/", content=data, headers={
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
+        assert response.status_code == 201
+        data = json.dumps({
+            'email': 'tester2@example.com',
+            'full_name': 'Tester 2',
+        })
+        response = client.put(f"/api/v1/users/tester2", content=data, headers={
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
+        assert response.status_code == 200
+        response = client.get(f"/api/v1/users/tester2", headers={
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
+        assert response.status_code == 200
+        data = response.json()
+        assert data['email'] == 'tester2@example.com'
+
+
+@pytest.mark.asyncio
+async def test_get_userinfo():
+    with pytest_client() as client:
+        token = get_token(client, 'events')
+        response = client.get("/api/v1/users/userinfo/me", headers={
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
+        assert response.status_code == 200
+        data = response.json()
+        assert data['username'] == 'tester'
+
+
+@pytest.mark.asyncio
+async def test_update_userinfo():
+    with pytest_client() as client:
+        token = get_token(client, 'events')
+        data = json.dumps({
+            'email': 'tester@example.org',
+            'full_name': 'Tester'
+        })
+        response = client.put("/api/v1/users/userinfo/me", content=data, headers={
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        })
+        assert response.status_code == 200
+        data = response.json()
+        assert data['full_name'] == 'Tester'
